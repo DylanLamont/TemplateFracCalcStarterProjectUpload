@@ -46,20 +46,17 @@ public class FracCalc {
         int[] operand1Composition = operandSplitter(operand1);
         int[] operand2Composition = operandSplitter(operand2);
 
-      //  if (operand1Composition[1] == 0 || operand2Composition[1]==0){
-      //  	return("Do not enter an equation where a denominator is 0");
-     //   } 
         if (operator.equals("-") || operator.equals("+")){					//Test to call additive methods
         	int[] returnAnswer = addSubFraction(operand1Composition, operand2Composition, operator);
-        	return (returnAnswer[0] + "/" + returnAnswer[1]);
+            return(reduceFrac(returnAnswer));
         } else if (operator.equals("*")){									//Test to find product from mult method
         	int[] returnAnswer = multiplyFraction(operand1Composition, operand2Composition);
-        	return (returnAnswer[0] + "/" + returnAnswer[1]);
+        	return(reduceFrac(returnAnswer));
         }else if (operator.equals("/")){									//Conditional to see if divide method needed
         	int[] returnAnswer = divideFraction(operand1Composition, operand2Composition);
-        	return (returnAnswer[0] + "/" + returnAnswer[1]);
+        	return(reduceFrac(returnAnswer));
         } else{
-        return("That is not an expression");
+        	return("That is not an expression");
         }
     }    
     
@@ -67,11 +64,7 @@ public class FracCalc {
     public static int[] operandSplitter (String inputOperand){
     	String[] operandStringBreakdown = new String[3];
     	if (inputOperand.indexOf("_") == -1 && inputOperand.indexOf("/") == -1){				//Case for a number without fraction portion
-    		//if (inputOperand.indexOf("-") == 0){
-    			//operandStringBreakdown[0] = inputOperand.substring(1);
-    		//}else{
-    			operandStringBreakdown[0] = inputOperand;
-    		//}
+    		operandStringBreakdown[0] = inputOperand;
     		operandStringBreakdown[1] = "0";
     		operandStringBreakdown[2] = "1";
     	}else if(inputOperand.indexOf("_") == -1 && inputOperand.indexOf("/") > -1){			//Case of splittinig for operand with only a fraction, no whole number
@@ -113,6 +106,8 @@ public class FracCalc {
     	
     	}
     
+    
+    
     public static int[] addSubFraction (int[] operand1, int[] operand2, String operator){
     	int[] sumFrac = new int[2];
     	if (operand1[1] == operand2[1]){					//Case if simimlar denominators
@@ -132,6 +127,8 @@ public class FracCalc {
     	return (sumFrac);
     }
 
+    
+    
     public static int[] multiplyFraction (int[] operand1, int[]operand2 ){
     	int[] productFrac = new int[2];
     	productFrac[0] = operand1[0] * operand2[0];
@@ -146,7 +143,63 @@ public class FracCalc {
     	int[] quocientFrac = multiplyFraction(operand1, operand2);
     	return (quocientFrac);
     }
-    // TODO: Fill in the space below with any helper methods that you think you will need
     
-    	}
+    
+    public static String reduceFrac (int[] result){
+    	//int improperNumerator = result[0];
+    	//int improperDenominator = result[1];
+    	 int gcf = gcf(result[0], result[1]);
+    	 result[0] /= gcf;
+    	 result[1] /= gcf;
+    	 String answer = toMixedNum(result[0], result[1]);
+    	 return (answer);
+    	 
+    }
+    
+    
+	public static int gcf (int num1, int num2){				//finds the greatest common factor of the two numbers
+		if (num1 <0 && num2 <0){						//solution to error if both negative, the max does not work
+			num1 *= -1;
+			num2 *= -1;
+		}
+		int loopVar = Math.max(num1, num2);
+		if (num1 == num2){
+			return(num1);
+		}
+		for (;loopVar > 0; loopVar--){
+			if (num1 % loopVar == 0 && num2 % loopVar ==0){
+				return (loopVar);
+			}
+		}
+		return(1);
+	}
+
+	public static String toMixedNum (int numerator, int denominator){			// Method used to turn the improper fraction into a mixed fraction
+		if (denominator == 0){
+			return ("That equation doesn't work");
+		}
+		int wholeNum = numerator/denominator;
+		int fracNum = numerator % denominator;
+		if (fracNum == 0){
+			return (wholeNum + "");
+		}
+		if(wholeNum<0 && fracNum<0){
+			fracNum *= -1;
+		} if(fracNum <0 && denominator < 0){
+			fracNum *= -1;
+			denominator *= -1;
+		} if (wholeNum<0 && denominator<0){
+			denominator *= -1;
+		}if (denominator<0 && numerator>0){
+			denominator *= -1;
+			fracNum *= -1;
+		}
+		
+		if(wholeNum==0){
+			return (fracNum + "/" + denominator );
+		}
+		return (wholeNum + "_" + fracNum + "/" + denominator);
+	}
+}
+
 
