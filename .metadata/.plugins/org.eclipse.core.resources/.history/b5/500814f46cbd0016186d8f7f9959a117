@@ -181,7 +181,7 @@ public class FracCalc {
 		if (fracNum == 0){
 			return (wholeNum + "");
 		}
-		if(wholeNum<0 && fracNum<0){					//Cases to find how to organize the negatives
+		if(wholeNum<0 && fracNum<0){
 			fracNum *= -1;
 		} if(fracNum <0 && denominator < 0){
 			fracNum *= -1;

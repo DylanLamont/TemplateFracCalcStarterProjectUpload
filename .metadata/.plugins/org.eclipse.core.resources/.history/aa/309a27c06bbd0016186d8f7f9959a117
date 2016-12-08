@@ -56,28 +56,28 @@ public class FracCalc {
         	int[] returnAnswer = divideFraction(operand1Composition, operand2Composition);
         	return(reduceFrac(returnAnswer));
         } else{
-        	return("ERROR");							//Error Handling: more than two operators or odd formation does not run
+        	return("That is not an expression");
         }
     }    
     
     
     public static int[] operandSplitter (String inputOperand){
     	String[] operandStringBreakdown = new String[3];
-    	if (inputOperand.indexOf("_") == -1 && inputOperand.indexOf("/") == -1){				//Case for a number without fraction portion, i.e. 1
+    	if (inputOperand.indexOf("_") == -1 && inputOperand.indexOf("/") == -1){				//Case for a number without fraction portion
     		operandStringBreakdown[0] = inputOperand;
     		operandStringBreakdown[1] = "0";
     		operandStringBreakdown[2] = "1";
-    	}else if(inputOperand.indexOf("_") == -1 && inputOperand.indexOf("/") > -1){			//Case of splitting for operand with only a fraction, no whole number, i.e. 3/7
+    	}else if(inputOperand.indexOf("_") == -1 && inputOperand.indexOf("/") > -1){			//Case of splittinig for operand with only a fraction, no whole number
     		operandStringBreakdown[0] = "0";
     		String[] fractionSplit = inputOperand.split("/");
     		operandStringBreakdown[1] = fractionSplit[0];
     		operandStringBreakdown[2] = fractionSplit[1];
-        } else if(inputOperand.indexOf("/") == -1 && inputOperand.indexOf("_") > -1){			//Case for only whole number, i.e. 4_ +
+        } else if(inputOperand.indexOf("/") == -1 && inputOperand.indexOf("_") > -1){			//Case for only whole number
     		String[] wholeNumSplit = inputOperand.split("_");
     		operandStringBreakdown[0] = wholeNumSplit[0];
     		operandStringBreakdown[1] = "0";
     		operandStringBreakdown[2] = "1";
-    	}else{																	//Case for whole number and fraction operand i.e. 3_6/7	
+    	}else{																	//case for whole num and fraction operand	
     		String[] wholeNumSplit = inputOperand.split("_");
     		operandStringBreakdown[0] = wholeNumSplit[0];
     		String[] fractionSplit = wholeNumSplit[1].split("/");
@@ -89,10 +89,9 @@ public class FracCalc {
     	 * 
     	 */
     	int[] returnIntArray = new int[2];
-    	if (inputOperand.indexOf("-") > -1 && inputOperand.indexOf("_") > -1){					//Case to turn to improper with negative whole number
+    	if (inputOperand.indexOf("-") > -1 && inputOperand.indexOf("_") > -1){					//Case to turn to improper with negatives
     		returnIntArray[0] = ((Integer.parseInt(operandStringBreakdown[0]) * Integer.parseInt(operandStringBreakdown[2])) - Integer.parseInt(operandStringBreakdown[1]) );
-    	}
-    	else if (inputOperand.indexOf("-") > -1 && inputOperand.indexOf("_") == -1){			//Case and used for fractions with no whole number, but has a negative numerator
+    	}else if (inputOperand.indexOf("-") > -1 && inputOperand.indexOf("_") == -1){			//Case and used for fractions with no whole number, but has a negative numerator
     		returnIntArray[0] = Integer.parseInt(operandStringBreakdown[1]);					
     		if (inputOperand.indexOf("/") == -1){										
     			returnIntArray[0] = Integer.parseInt(operandStringBreakdown[0]);
@@ -102,15 +101,16 @@ public class FracCalc {
     	returnIntArray[0] = (Integer.parseInt(operandStringBreakdown[1]) + (Integer.parseInt(operandStringBreakdown[0]) * Integer.parseInt(operandStringBreakdown[2])));
     	}
     	returnIntArray[1] = Integer.parseInt(operandStringBreakdown[2]);
+    	//System.out.println(Arrays.toString(returnIntArray));
     	return (returnIntArray);
     	
-  }
+    	}
     
     
     
     public static int[] addSubFraction (int[] operand1, int[] operand2, String operator){
     	int[] sumFrac = new int[2];
-    	if (operand1[1] == operand2[1]){					//Case if similar denominators
+    	if (operand1[1] == operand2[1]){					//Case if simimlar denominators
     		sumFrac[0] = operand1[0] + operand2[0];
     		sumFrac[1] = operand1[1];
     	} else{												//Case if need to find common denominator
@@ -139,13 +139,15 @@ public class FracCalc {
     public static int[] divideFraction (int[] operand1, int[] operand2){
     	int reciprocalTempInt = operand2[0];
     	operand2[0] = operand2[1];
-    	operand2[1] = reciprocalTempInt;								//Find Reciprocal and call multiply with reciprocal as second operand
+    	operand2[1] = reciprocalTempInt;								//Find Recriprocal and call multiply with reciprocal as second operand
     	int[] quocientFrac = multiplyFraction(operand1, operand2);
     	return (quocientFrac);
     }
     
     
     public static String reduceFrac (int[] result){
+    	//int improperNumerator = result[0];
+    	//int improperDenominator = result[1];
     	 int gcf = gcf(result[0], result[1]);
     	 result[0] /= gcf;
     	 result[1] /= gcf;
@@ -174,14 +176,14 @@ public class FracCalc {
 
 	public static String toMixedNum (int numerator, int denominator){			// Method used to turn the improper fraction into a mixed fraction
 		if (denominator == 0){
-			return ("ERROR");													//Error Handling - zero in denominator
+			return ("That equation doesn't work");
 		}
 		int wholeNum = numerator/denominator;
 		int fracNum = numerator % denominator;
 		if (fracNum == 0){
 			return (wholeNum + "");
 		}
-		if(wholeNum<0 && fracNum<0){					//Cases to find how to organize the negatives
+		if(wholeNum<0 && fracNum<0){
 			fracNum *= -1;
 		} if(fracNum <0 && denominator < 0){
 			fracNum *= -1;

@@ -104,13 +104,13 @@ public class FracCalc {
     	returnIntArray[1] = Integer.parseInt(operandStringBreakdown[2]);
     	return (returnIntArray);
     	
-  }
+    	}
     
     
     
     public static int[] addSubFraction (int[] operand1, int[] operand2, String operator){
     	int[] sumFrac = new int[2];
-    	if (operand1[1] == operand2[1]){					//Case if similar denominators
+    	if (operand1[1] == operand2[1]){					//Case if simimlar denominators
     		sumFrac[0] = operand1[0] + operand2[0];
     		sumFrac[1] = operand1[1];
     	} else{												//Case if need to find common denominator
@@ -146,6 +146,8 @@ public class FracCalc {
     
     
     public static String reduceFrac (int[] result){
+    	//int improperNumerator = result[0];
+    	//int improperDenominator = result[1];
     	 int gcf = gcf(result[0], result[1]);
     	 result[0] /= gcf;
     	 result[1] /= gcf;
@@ -174,14 +176,14 @@ public class FracCalc {
 
 	public static String toMixedNum (int numerator, int denominator){			// Method used to turn the improper fraction into a mixed fraction
 		if (denominator == 0){
-			return ("ERROR");													//Error Handling - zero in denominator
+			return ("That equation doesn't work");
 		}
 		int wholeNum = numerator/denominator;
 		int fracNum = numerator % denominator;
 		if (fracNum == 0){
 			return (wholeNum + "");
 		}
-		if(wholeNum<0 && fracNum<0){					//Cases to find how to organize the negatives
+		if(wholeNum<0 && fracNum<0){
 			fracNum *= -1;
 		} if(fracNum <0 && denominator < 0){
 			fracNum *= -1;
